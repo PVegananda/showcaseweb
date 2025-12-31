@@ -1,11 +1,13 @@
 <?php
-$host = "127.0.0.1";
-$user = "root";
-$pass = ""; // default brew biasanya kosong
-$db   = "crud_artikel";
-
-$conn = mysqli_connect($host, $user, $pass, $db);
+$conn = mysqli_connect(
+    $_ENV['MYSQLHOST'],
+    $_ENV['MYSQLUSER'],
+    $_ENV['MYSQLPASSWORD'],
+    $_ENV['MYSQLDATABASE'],
+    $_ENV['MYSQLPORT']
+);
 
 if (!$conn) {
-    die("Koneksi gagal: " . mysqli_connect_error());
+    die("Koneksi database gagal: " . mysqli_connect_error());
 }
+?>
