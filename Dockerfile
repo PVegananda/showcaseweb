@@ -1,18 +1,19 @@
 FROM php:8.2-apache
 
-# Disable MPM event & worker
-RUN a2dismod mpm_event mpm_worker || true
+# === FIX TOTAL MPM APACHE ===
+RUN rm -f /etc/apache2/mods-enabled/mpm_event.load \
+    && rm -f /etc/apache2/mods-enabled/mpm_worker.load \
+    && rm -f /etc/apache2/mods-enabled/mpm_prefork.load
 
-# Enable MPM prefork (WAJIB untuk PHP Apache)
 RUN a2enmod mpm_prefork rewrite
 
-# Install PHP extensions
+# === PHP EXTENSIONS ===
 RUN docker-php-ext-install mysqli pdo pdo_mysql
 
-# Copy source code
+# === COPY SOURCE ===
 COPY . /var/www/html/
 
-# Permission
+# === PERMISSION ===
 RUN chown -R www-data:www-data /var/www/html
 
 EXPOSE 80
