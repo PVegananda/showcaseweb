@@ -113,6 +113,51 @@
 
                 </tbody>
             </table>
+
+            <!-- ================= MODAL TAMBAH ================= -->
+            <div class="modal fade" id="modalTambah" tabindex="-1">
+            <div class="modal-dialog modal-lg modal-dialog-centered">
+                <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title">Tambah Artikel</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <form method="post" action="article_tambah.php" enctype="multipart/form-data">
+                    <div class="modal-body">
+
+                    <div class="mb-3">
+                        <label class="form-label">Judul</label>
+                        <input type="text" name="judul" class="form-control" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Isi</label>
+                        <textarea name="isi" rows="4" class="form-control" required></textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Gambar</label>
+                        <input type="file" name="gambar" class="form-control">
+                    </div>
+
+                    </div>
+
+                    <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        Batal
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        Simpan
+                    </button>
+                    </div>
+                </form>
+
+                </div>
+            </div>
+            </div>
+
         </div>
     </div>
 
