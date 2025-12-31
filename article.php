@@ -71,12 +71,34 @@ if (isset($_POST['hapus'])) {
 
 
 
+<style>
+.page-title {
+    font-weight: 700;
+    font-size: 2rem;
+    letter-spacing: .5px;
+}
+
+.page-divider {
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(to right, #111827, #e5e7eb);
+    border-radius: 2px;
+}
+
+</style>
 <div class="container">
+
+    <!-- JUDUL BESAR -->
     <div class="mb-4">
-        <h3 class="page-title mb-2">Artikel</h3>
+        <h3 class="page-title mb-2">Article</h3>
         <div class="page-divider"></div>
     </div>
-    <button type="button" class="btn btn-secondary mb-2" data-bs-toggle="modal" data-bs-target="#modalTambah">
+
+    <!-- TOMBOL -->
+    <button type="button"
+            class="btn btn-secondary mb-3"
+            data-bs-toggle="modal"
+            data-bs-target="#modalTambah">
         <i class="bi bi-plus-lg"></i> Tambah Data
     </button>
     <div class="row">
