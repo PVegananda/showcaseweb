@@ -1,30 +1,29 @@
 <?php
 session_start();
-include "koneksi.php";
+require "koneksi.php";
 
-// Jika sudah login, langsung ke admin
 if (isset($_SESSION['username'])) {
     header("Location: admin.php");
     exit;
 }
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-
     $username = $_POST['user'];
-    $password = md5($_POST['pass']); // sesuai database kamu
+    $password = md5($_POST['pass']); // sesuai database
 
-    $sql = "SELECT * FROM user WHERE username = :username AND password = :password";
-    $stmt = $conn->prepare($sql);
+    $stmt = $conn->prepare(
+        "SELECT * FROM user WHERE username = :username AND password = :password"
+    );
 
     $stmt->execute([
         ':username' => $username,
         ':password' => $password
     ]);
 
-    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    $user = $stmt->fetch();
 
-    if ($row) {
-        $_SESSION['username'] = $row['username'];
+    if ($user) {
+        $_SESSION['username'] = $user['username'];
         header("Location: admin.php");
         exit;
     } else {
@@ -33,6 +32,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 }
 ?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
