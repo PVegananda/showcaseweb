@@ -1,19 +1,16 @@
-FROM php:8.2-apache
+FROM php:8.2-cli
 
-# === FIX TOTAL MPM APACHE ===
-RUN rm -f /etc/apache2/mods-enabled/mpm_event.load \
-    && rm -f /etc/apache2/mods-enabled/mpm_worker.load \
-    && rm -f /etc/apache2/mods-enabled/mpm_prefork.load
-
-RUN a2enmod mpm_prefork rewrite
-
-# === PHP EXTENSIONS ===
+# Install extensions MySQL
 RUN docker-php-ext-install mysqli pdo pdo_mysql
 
-# === COPY SOURCE ===
-COPY . /var/www/html/
+# Set working directory
+WORKDIR /app
 
-# === PERMISSION ===
-RUN chown -R www-data:www-data /var/www/html
+# Copy source code
+COPY . /app
 
-EXPOSE 80
+# Expose port Railway
+EXPOSE 8080
+
+# Jalankan PHP built-in server
+CMD ["php", "-S", "0.0.0.0:8080"]
