@@ -16,4 +16,6 @@ if (!empty($_FILES['gambar']['name'])) {
     $stmt->execute([$judul, $isi, $id]);
 }
 
-header("Location: admin.php?page=article");
+header("Location: admin.php?page=article&updated=1");
+exit;
+

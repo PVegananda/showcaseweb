@@ -140,15 +140,77 @@ $allowedPages = ['dashboard', 'article'];
 </section>
 
 <!-- FOOTER -->
-<footer class="text-center p-4">
+<!-- ================= FOOTER ================= -->
+<footer class="text-center p-5">
     <div>
-        <a href="https://www.instagram.com/udinusofficial"><i class="bi bi-instagram h2 p-2"></i></a>
-        <a href="https://twitter.com/udinusofficial"><i class="bi bi-twitter h2 p-2"></i></a>
-        <a href="https://wa.me/+62812685577"><i class="bi bi-whatsapp h2 p-2"></i></a>
+        <a href="https://www.instagram.com/panduupratamaaa_?igsh=MTBvNmJraTlydDZycw%3D%3D&utm_source=qr">
+            <i class="bi bi-instagram h2 p-2"></i>
+        </a>
+        <a href="https://www.tiktok.com/@masbearr">
+            <i class="bi bi-tiktok h2 p-2"></i>
+        </a>
+        <a href="https://wa.me/+6282329422289">
+            <i class="bi bi-whatsapp h2 p-2"></i>
+        </a>
     </div>
     <div class="fw-semibold text-dark">devin &copy; 2023</div>
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<?php if (isset($_GET['success'])): ?>
+<script>
+Swal.fire({
+    icon: 'success',
+    title: 'Berhasil 🎉',
+    text: 'Data berhasil disimpan',
+    timer: 2000,
+    showConfirmButton: false
+});
+</script>
+<?php endif; ?>
+
+<?php if (isset($_GET['deleted'])): ?>
+<script>
+Swal.fire({
+    icon: 'success',
+    title: 'Dihapus 🗑️',
+    text: 'Data berhasil dihapus',
+    timer: 2000,
+    showConfirmButton: false
+});
+</script>
+<?php endif; ?>
+
+<?php if (isset($_GET['updated'])): ?>
+<script>
+Swal.fire({
+    icon: 'success',
+    title: 'Berhasil ✏️',
+    text: 'Data berhasil diperbarui',
+    timer: 2000,
+    showConfirmButton: false
+});
+</script>
+<?php endif; ?>
+<script>
+function confirmDelete(url) {
+    Swal.fire({
+        title: 'Yakin hapus?',
+        text: 'Data tidak bisa dikembalikan',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#dc2626',
+        cancelButtonColor: '#6b7280',
+        confirmButtonText: 'Ya, hapus'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            window.location.href = url;
+        }
+    });
+}
+</script>
+
 </body>
 </html>

@@ -32,5 +32,5 @@ $stmt->execute([
     $username
 ]);
 
-header("Location: admin.php?page=article");
+header("Location: admin.php?page=article&success=1");
 exit;

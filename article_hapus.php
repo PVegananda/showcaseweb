@@ -6,4 +6,5 @@ $id = $_POST['id'];
 $stmt = $conn->prepare("DELETE FROM article WHERE id=?");
 $stmt->execute([$id]);
 
-header("Location: admin.php?page=article");
+header("Location: admin.php?page=article&deleted=1");
+exit;

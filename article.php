@@ -85,12 +85,17 @@
                         </td>
                         <td><?= nl2br(htmlspecialchars($row['isi'])) ?></td>
                         <td>
-                            <?php if ($row['gambar']) : ?>
-                                <img src="img/<?= $row['gambar'] ?>" width="100">
-                            <?php else : ?>
+                            <?php if (!empty($row['gambar'])): ?>
+                                <img 
+                                    src="img/<?= htmlspecialchars($row['gambar']) ?>" 
+                                    width="100" 
+                                    style="border-radius:8px"
+                                    onerror="this.src='https://via.placeholder.com/100x70?text=No+Image';"
+                                >
+                            <?php else: ?>
                                 -
                             <?php endif; ?>
-                        </td>
+                            </td>
                         <td class="text-center">
                             <button class="badge rounded-pill text-bg-success border-0"
                                     data-bs-toggle="modal"
@@ -101,7 +106,11 @@
                             <button class="badge rounded-pill text-bg-danger border-0"
                                     data-bs-toggle="modal"
                                     data-bs-target="#modalHapus<?= $row['id'] ?>">
-                                <i class="bi bi-x-circle"></i>
+                                <a href="javascript:void(0)"
+                                    onclick="confirmDelete('article_hapus.php?id=<?= $row['id'] ?>')"
+                                    class="badge rounded-pill text-bg-danger">
+                                    <i class="bi bi-x-circle"></i>
+                                    </a>
                             </button>
                         </td>
                     </tr>
