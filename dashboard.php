@@ -1,9 +1,12 @@
 <?php
 // dashboard.php
+
+$stmt = $conn->query("SELECT COUNT(*) AS total FROM article");
+$data = $stmt->fetch(PDO::FETCH_ASSOC);
+$totalArtikel = $data['total'] ?? 0;
 ?>
 
 <style>
-/* ===== JUDUL HALAMAN ===== */
 .page-title {
     font-weight: 700;
     letter-spacing: .5px;
@@ -16,7 +19,6 @@
     border-radius: 2px;
 }
 
-/* ===== CARD DASHBOARD ===== */
 .dashboard-card {
     border-radius: 14px;
     transition: transform .2s ease, box-shadow .2s ease;
@@ -30,30 +32,24 @@
 
 <div class="container">
 
-    <!-- ===== JUDUL DASHBOARD ===== -->
     <div class="mb-4">
         <h3 class="page-title mb-2">Dashboard</h3>
         <div class="page-divider"></div>
     </div>
 
-    <!-- ===== CARD STATISTIK ===== -->
-    <div class="row row-cols-1 row-cols-md-4 g-4 justify-content-start">
+    <div class="row row-cols-1 row-cols-md-4 g-4">
         <div class="col">
-            <div class="card dashboard-card border border-danger shadow" style="max-width: 18rem;">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <h5 class="card-title mb-1">
-                                <i class="bi bi-newspaper"></i> Article
-                            </h5>
-                            <small class="text-muted">Total artikel</small>
-                        </div>
-                        <div>
-                            <span class="badge rounded-pill text-bg-danger fs-3">
-                                <?php echo $conn->query("SELECT COUNT(*) FROM article")->fetch_row()[0]; ?>
-                            </span>
-                        </div>
+            <div class="card dashboard-card border border-danger shadow h-100">
+                <div class="card-body d-flex justify-content-between align-items-center">
+                    <div>
+                        <h5 class="card-title mb-1">
+                            <i class="bi bi-newspaper"></i> Article
+                        </h5>
+                        <small class="text-muted">Total artikel</small>
                     </div>
+                    <span class="badge rounded-pill text-bg-danger fs-3">
+                        <?= $totalArtikel; ?>
+                    </span>
                 </div>
             </div>
         </div>

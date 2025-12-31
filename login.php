@@ -4,28 +4,33 @@ include "koneksi.php";
 
 // Jika sudah login, langsung ke admin
 if (isset($_SESSION['username'])) {
-    header("location:admin.php");
+    header("Location: admin.php");
     exit;
 }
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $username = $_POST['user'];
-    $password = md5($_POST['pass']);
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
-    $stmt = $conn->prepare("SELECT * FROM user WHERE username=? AND password=?");
-    $stmt->bind_param("ss", $username, $password);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $row = $result->fetch_assoc();
+    $username = $_POST['user'];
+    $password = md5($_POST['pass']); // sesuai database kamu
+
+    $sql = "SELECT * FROM user WHERE username = :username AND password = :password";
+    $stmt = $conn->prepare($sql);
+
+    $stmt->execute([
+        ':username' => $username,
+        ':password' => $password
+    ]);
+
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if ($row) {
         $_SESSION['username'] = $row['username'];
-        header("location:admin.php");
+        header("Location: admin.php");
+        exit;
     } else {
-        header("location:login.php?error=1");
+        header("Location: login.php?error=1");
+        exit;
     }
-    $stmt->close();
-    $conn->close();
 }
 ?>
 <!DOCTYPE html>
@@ -80,20 +85,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             color: #dc2626;
             font-size: .9rem;
         }
-
-        body::before {
-        content: none !important;
-        }
-
-        .card,
-        .login-card {
-            position: relative;
-            z-index: 10;
-        }
-
-        body {
-            pointer-events: auto !important;
-        }
     </style>
 </head>
 
@@ -118,7 +109,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         </div>
                     <?php } ?>
 
-                    <form action="" method="post">
+                    <form method="post">
                         <input
                             type="text"
                             name="user"
