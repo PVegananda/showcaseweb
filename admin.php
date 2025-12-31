@@ -153,7 +153,7 @@ $allowedPages = ['dashboard', 'article'];
             <i class="bi bi-whatsapp h2 p-2"></i>
         </a>
     </div>
-    <div class="fw-semibold text-dark">devin &copy; 2023</div>
+    <div class="fw-semibold text-dark">Devin Abiyyu Pandu Pratama &copy; 2025</div>
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
