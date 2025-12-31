@@ -69,12 +69,13 @@ if (isset($_POST['hapus'])) {
 }
 ?>
 
-<div class="mb-4">
+
+
+<div class="container">
+    <div class="mb-4">
         <h3 class="page-title mb-2">Artikel</h3>
         <div class="page-divider"></div>
     </div>
-
-<div class="container">
     <button type="button" class="btn btn-secondary mb-2" data-bs-toggle="modal" data-bs-target="#modalTambah">
         <i class="bi bi-plus-lg"></i> Tambah Data
     </button>
