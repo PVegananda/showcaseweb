@@ -1,3 +1,7 @@
+<?php
+// article.php
+?>
+
 <style>
 .page-title {
     font-weight: 700;
@@ -16,6 +20,7 @@
     color: #fff;
     border-radius: 8px;
 }
+
 .btn-add:hover {
     background: #111827;
     color: #fff;
@@ -33,27 +38,25 @@
     color: #ffffff;
 }
 
-.table tbody tr:hover {
-    background-color: #f8fafc;
-}
-
 .table img {
     border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(0,0,0,.1);
 }
 </style>
 
 <div class="container">
 
+    <!-- ===== JUDUL ===== -->
     <div class="mb-4">
         <h3 class="page-title mb-2">Article</h3>
         <div class="page-divider"></div>
     </div>
 
-    <button type="button" class="btn btn-add mb-3" data-bs-toggle="modal" data-bs-target="#modalTambah">
+    <!-- ===== TOMBOL TAMBAH ===== -->
+    <button class="btn btn-add mb-3" data-bs-toggle="modal" data-bs-target="#modalTambah">
         <i class="bi bi-plus-lg"></i> Tambah Data
     </button>
 
+    <!-- ===== TABEL ===== -->
     <div class="table-wrapper">
         <div class="table-responsive">
             <table class="table table-hover align-middle mb-0">
@@ -67,98 +70,113 @@
                     </tr>
                 </thead>
                 <tbody>
-
                 <?php
                 $stmt = $conn->query("SELECT * FROM article ORDER BY tanggal DESC");
-                $articles = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                $no = 1;
 
-                if (count($articles) > 0):
-                    $no = 1;
-                    foreach ($articles as $row):
+                while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) :
                 ?>
                     <tr>
-                        <td><?= $no++; ?></td>
+                        <td><?= $no++ ?></td>
                         <td>
-                            <strong><?= htmlspecialchars($row['judul']); ?></strong><br>
-                            <small class="text-muted"><?= htmlspecialchars($row['tanggal']); ?></small><br>
-                            <small class="text-muted">oleh <?= htmlspecialchars($row['username']); ?></small>
+                            <strong><?= htmlspecialchars($row['judul']) ?></strong><br>
+                            <small class="text-muted"><?= $row['tanggal'] ?></small><br>
+                            <small class="text-muted">oleh <?= $row['username'] ?></small>
                         </td>
-                        <td><?= nl2br(htmlspecialchars($row['isi'])); ?></td>
+                        <td><?= nl2br(htmlspecialchars($row['isi'])) ?></td>
                         <td>
-                            <?php if (!empty($row['gambar']) && file_exists("img/".$row['gambar'])): ?>
-                                <img src="img/<?= htmlspecialchars($row['gambar']); ?>" width="110">
-                            <?php else: ?>
-                                <span class="text-muted">-</span>
+                            <?php if ($row['gambar']) : ?>
+                                <img src="img/<?= $row['gambar'] ?>" width="100">
+                            <?php else : ?>
+                                -
                             <?php endif; ?>
                         </td>
                         <td class="text-center">
-                            <a href="#" class="badge rounded-pill text-bg-success">
+                            <button class="badge rounded-pill text-bg-success border-0"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#modalEdit<?= $row['id'] ?>">
                                 <i class="bi bi-pencil"></i>
-                            </a>
-                            <a href="#" class="badge rounded-pill text-bg-danger">
-                                <i class="bi bi-x-circle"></i>
-                            </a>
-                        </td>
-                    </tr>
-                <?php
-                    endforeach;
-                else:
-                ?>
-                    <tr>
-                        <td colspan="5" class="text-center text-muted py-4">
-                            Belum ada artikel
-                        </td>
-                    </tr>
-                <?php endif; ?>
+                            </button>
 
+                            <button class="badge rounded-pill text-bg-danger border-0"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#modalHapus<?= $row['id'] ?>">
+                                <i class="bi bi-x-circle"></i>
+                            </button>
+                        </td>
+                    </tr>
+
+                    <!-- ================= MODAL EDIT ================= -->
+                    <div class="modal fade" id="modalEdit<?= $row['id'] ?>" tabindex="-1">
+                        <div class="modal-dialog modal-lg modal-dialog-centered">
+                            <div class="modal-content">
+                                <form method="post" action="article_edit.php" enctype="multipart/form-data">
+
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Edit Artikel</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                    </div>
+
+                                    <div class="modal-body">
+                                        <input type="hidden" name="id" value="<?= $row['id'] ?>">
+
+                                        <div class="mb-3">
+                                            <label class="form-label">Judul</label>
+                                            <input type="text" name="judul" class="form-control"
+                                                   value="<?= htmlspecialchars($row['judul']) ?>" required>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label class="form-label">Isi</label>
+                                            <textarea name="isi" class="form-control" rows="4" required><?= htmlspecialchars($row['isi']) ?></textarea>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label class="form-label">Gambar (opsional)</label>
+                                            <input type="file" name="gambar" class="form-control">
+                                        </div>
+                                    </div>
+
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                                        <button type="submit" class="btn btn-success">Simpan</button>
+                                    </div>
+
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ================= MODAL HAPUS ================= -->
+                    <div class="modal fade" id="modalHapus<?= $row['id'] ?>" tabindex="-1">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+
+                                <div class="modal-header">
+                                    <h5 class="modal-title text-danger">Hapus Artikel</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                </div>
+
+                                <div class="modal-body">
+                                    Yakin hapus artikel
+                                    <strong><?= htmlspecialchars($row['judul']) ?></strong> ?
+                                </div>
+
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                                    <form method="post" action="article_hapus.php">
+                                        <input type="hidden" name="id" value="<?= $row['id'] ?>">
+                                        <button type="submit" class="btn btn-danger">Hapus</button>
+                                    </form>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                <?php endwhile; ?>
                 </tbody>
             </table>
-
-            <!-- ================= MODAL TAMBAH ================= -->
-            <div class="modal fade" id="modalTambah" tabindex="-1">
-            <div class="modal-dialog modal-lg modal-dialog-centered">
-                <div class="modal-content">
-
-                <div class="modal-header">
-                    <h5 class="modal-title">Tambah Artikel</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-
-                <form method="post" action="article_tambah.php" enctype="multipart/form-data">
-                    <div class="modal-body">
-
-                    <div class="mb-3">
-                        <label class="form-label">Judul</label>
-                        <input type="text" name="judul" class="form-control" required>
-                    </div>
-
-                    <div class="mb-3">
-                        <label class="form-label">Isi</label>
-                        <textarea name="isi" rows="4" class="form-control" required></textarea>
-                    </div>
-
-                    <div class="mb-3">
-                        <label class="form-label">Gambar</label>
-                        <input type="file" name="gambar" class="form-control">
-                    </div>
-
-                    </div>
-
-                    <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                        Batal
-                    </button>
-                    <button type="submit" class="btn btn-primary">
-                        Simpan
-                    </button>
-                    </div>
-                </form>
-
-                </div>
-            </div>
-            </div>
-
         </div>
     </div>
-
 </div>
